@@ -130,5 +130,40 @@ class SoldierController extends Controller
 		
 		return response($response);
 	}
+
+	public function soldiersList(){
+
+		$response = "";
+		$soldiers = Soldier::all();
+
+		$response= [];
+
+		foreach ($soldiers as $soldier) {
+			$response[] = [
+				"name" => $soldier->name,
+				"surname" => $soldier->surname,
+				"rank" => $soldier->rank,
+				"badge_number" => $soldier->badge_number
+			];
+		}
+		
+		return response()->json($response);
+	}
+
+	public function soldierDetails($id){
+
+		$response = "";
+		$soldier = Soldier::find($id);
+
+		if($soldier){
+
+			$response = $soldier;
+
+		}else{
+			$response = "Libro no encontrado";
+		}
+
+		return response()->json($response);
+	}
 	
 }

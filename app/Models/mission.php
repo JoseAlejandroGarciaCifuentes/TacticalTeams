@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class mission extends Model
 {
     use HasFactory;
+    protected $hidden = ['updated_at','created_at'];
 }

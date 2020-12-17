@@ -74,7 +74,6 @@ class MissionController extends Controller
 				//TODO: Validar los datos antes de guardar la mission
 				$mission->description = (isset($data->description) ? $data->description : $mission->description);
 				$mission->priority = (isset($data->priority) ? $data->priority : $mission->priority);
-                $mission->starting_date = (isset($data->starting_date) ? $data->starting_date : $mission->starting_date);
                 $mission->state = (isset($data->state) ? $data->state : $mission->state);
 
 
@@ -122,6 +121,20 @@ class MissionController extends Controller
 		}
 		return response($response);
 
+	}
+
+	public function missionsList(){
+
+		$response = "";
+		$missions = Mission::all();
+
+		$response= [];
+
+		foreach ($missions as $mission) {
+			$response[] = $mission;
+		}
+		
+		return response()->json($response);
 	}
 
 	

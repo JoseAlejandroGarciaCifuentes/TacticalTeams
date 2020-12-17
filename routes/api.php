@@ -25,6 +25,10 @@ Route::prefix('soldiers')->group(function (){
 
 	Route::post('/update/state/{id}',[SoldierController::class, 'updateSoldierState']);
 
+	Route::get('/show/list',[SoldierController::class, 'soldiersList']);
+
+	Route::get('/show/details/{id}',[SoldierController::class, 'soldierDetails']);
+
 });
 
 Route::prefix('missions')->group(function (){
@@ -35,6 +39,7 @@ Route::prefix('missions')->group(function (){
 
 	Route::post('/add/soldier',[MissionController::class, 'addSoldier']);
 
+	Route::get('/show/list',[MissionController::class, 'missionsList']);
 });
 
 Route::prefix('teams')->group(function (){

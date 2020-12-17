@@ -16,7 +16,7 @@ class CreateSoldierTeamsTable extends Migration
         Schema::create('soldier_teams', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('soldier_id')->constrained();
+            $table->foreignId('soldier_id')->constrained()->unique();
             $table->foreignId('team_id')->constrained()->onDelete('Cascade');
 
             $table->timestamps();
