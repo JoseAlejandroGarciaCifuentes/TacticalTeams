@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Mission;
+use App\Models\SoldierMission;
+use App\Models\Soldier;
 
 class MissionController extends Controller
 {
@@ -90,6 +92,36 @@ class MissionController extends Controller
 		}
 		
 		return response($response);
+	}
+
+	public function addSoldier(Request $request){
+
+		$response = "";
+		//Leer el contenido de la petición
+		$data = $request->getContent();
+
+		//Decodificar el json
+		$data = json_decode($data);
+
+		//Si hay un json válido, crear el libro
+		if($data&&Mission::find($data->mission)&&Soldier::find($data->soldier)){
+
+			$soldierMission = new SoldierMission();
+
+			//TODO: Validar los datos antes de guardar el libro
+
+			$soldierMission->mission_id = $data->mission;
+			$soldierMission->soldier_id = $data->soldier;
+			try{
+				$soldierMission->save();
+				$response = "OK";
+			}catch(\Exception $e){
+				$response = $e->getMessage();
+			}
+
+		}
+		return response($response);
+
 	}
 
 	

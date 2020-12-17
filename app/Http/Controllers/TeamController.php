@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Team;
+use App\Models\SoldierTeam;
+use App\Models\Soldier;
 
 class TeamController extends Controller
 {
@@ -28,7 +30,15 @@ class TeamController extends Controller
 
 			//TODO: Validar los datos antes de guardar el equipo
 
-            $team->name = $data->name;
+			$team->name = $data->name;
+			
+			if(isset($data->soldier_id)){
+				$team->soldier_id = $data->soldier_id;
+		   }
+
+		   if(isset($data->mission_id)){
+			$team->mission_id = $data->mission_id;
+	   		}
             
 			try{
 				$team->save();
@@ -105,4 +115,65 @@ class TeamController extends Controller
 
 		return response($response);
 	}
+
+	public function addLeader(Request $request, $id){
+
+		$response = "";
+		//Leer el contenido de la petición
+		$data = $request->getContent();
+
+		//Decodificar el json
+		$data = json_decode($data);
+
+		$team = Team::find($id);
+
+		//Si hay un json válido, crear el libro
+		if($data&&$team&&Soldier::find($data->leader)){
+
+			//TODO: Validar los datos antes de guardar el libro
+
+			$team->leader_id = (isset($data->leader) ? $data->leader : $team->leader_id);
+			
+			try{
+				$team->save();
+				$response = "OK";
+			}catch(\Exception $e){
+				$response = $e->getMessage();
+			}
+
+		}
+		return response($response);
+
+	}
+
+	public function addSoldier(Request $request){
+
+		$response = "";
+		//Leer el contenido de la petición
+		$data = $request->getContent();
+
+		//Decodificar el json
+		$data = json_decode($data);
+
+		//Si hay un json válido, crear el libro
+		if($data&&Team::find($data->team)&&Soldier::find($data->soldier)){
+
+			$soldierTeam = new SoldierTeam();
+
+			//TODO: Validar los datos antes de guardar el libro
+
+			$soldierTeam->team_id = $data->team;
+			$soldierTeam->soldier_id = $data->soldier;
+			try{
+				$soldierTeam->save();
+				$response = "OK";
+			}catch(\Exception $e){
+				$response = $e->getMessage();
+			}
+
+		}
+		return response($response);
+
+	}
+
 }

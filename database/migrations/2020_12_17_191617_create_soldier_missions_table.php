@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTeamsTable extends Migration
+class CreateSoldierMissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('soldier_missions', function (Blueprint $table) {
             $table->id();
-            $table->string('name', '100');
 
-            $table->foreignId('mission_id')->nullable()->constained();
-            $table->foreignId('leader_id')->nullable()->constained(); //leader
-            
+            $table->foreignId('soldier_id')->constrained();
+            $table->foreignId('mission_id')->constrained();
+
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('soldier_missions');
     }
 }
