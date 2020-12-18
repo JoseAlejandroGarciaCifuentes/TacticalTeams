@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Team;
-use App\Models\SoldierTeam;
 use App\Models\Soldier;
 
 class TeamController extends Controller
@@ -155,17 +154,17 @@ class TeamController extends Controller
 		//Decodificar el json
 		$data = json_decode($data);
 
-		//Si hay un json válido, crear el libro
-		if($data&&Team::find($data->team)&&Soldier::find($data->soldier)){
+		$soldier = Soldier::find($data->soldier);
 
-			$soldierTeam = new SoldierTeam();
+		//Si hay un json válido, crear el libro
+		if($data&&Team::find($data->team)&&$soldier){
 
 			//TODO: Validar los datos antes de guardar el libro
 
-			$soldierTeam->team_id = $data->team;
-			$soldierTeam->soldier_id = $data->soldier;
+			$soldier->team_id = $data->team;
+
 			try{
-				$soldierTeam->save();
+				$soldier->save();
 				$response = "OK";
 			}catch(\Exception $e){
 				$response = $e->getMessage();

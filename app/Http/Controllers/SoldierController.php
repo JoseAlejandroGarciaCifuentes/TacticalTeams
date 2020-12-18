@@ -143,7 +143,8 @@ class SoldierController extends Controller
 				"name" => $soldier->name,
 				"surname" => $soldier->surname,
 				"rank" => $soldier->rank,
-				"badge_number" => $soldier->badge_number
+				"badge_number" => $soldier->badge_number,
+				"team" => $soldier->team->id
 			];
 		}
 		
@@ -160,7 +161,7 @@ class SoldierController extends Controller
 			$response = $soldier;
 
 		}else{
-			$response = "Libro no encontrado";
+			$response = "Soldado no encontrado";
 		}
 
 		return response()->json($response);

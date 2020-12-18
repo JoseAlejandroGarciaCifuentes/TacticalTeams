@@ -18,9 +18,13 @@ class CreateTeamsTable extends Migration
             $table->string('name', '100')->unique();
 
             $table->foreignId('mission_id')->nullable()->constained();
-            $table->foreignId('leader_id')->nullable()->constained(); //leader
-            
+            $table->foreignId('leader_id')->nullable()->constained();      
             $table->timestamps();
+        });
+        Schema::table('soldiers', function (Blueprint $table){
+
+            $table->foreignId('team_id')->nullable()->constrained()->onDelete('Cascade');
+
         });
     }
 
@@ -31,6 +35,14 @@ class CreateTeamsTable extends Migration
      */
     public function down()
     {
+
+        Schema::table('soldiers', function (Blueprint $table){
+
+            $table->dropForeign(['team_id']);
+            $table->dropColumn('team_id');
+
+        });
+
         Schema::dropIfExists('teams');
     }
 }
