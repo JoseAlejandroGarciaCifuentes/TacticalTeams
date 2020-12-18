@@ -135,19 +135,23 @@ class SoldierController extends Controller
 		$response = "";
 		$soldiers = Soldier::all();
 
-		$response= [];
+		$response = [];
 
-		foreach ($soldiers as $soldier) {
-			$response[] = [
-				"name" => $soldier->name,
-				"surname" => $soldier->surname,
-				"rank" => $soldier->rank,
-				"badge_number" => $soldier->badge_number,
-				"team_id" => $soldier->team->id,
-				"team_name" => $soldier->team->name
+		for ($i=0; $i <count($soldiers) ; $i++) { 
+
+			$response[$i] = [
+				"name" => $soldiers[$i]->name,
+				"surname" => $soldiers[$i]->surname,
+				"rank" => $soldiers[$i]->rank,
+				"badge_number" => $soldiers[$i]->badge_number
 			];
+
+			if($soldiers[$i]->team_id){
+				$response[$i]['team_id'] = $soldiers[$i]->team->id;
+				$response[$i]['team_name'] = $soldiers[$i]->team->name;
+			}
 		}
-		
+
 		return response()->json($response);
 	}
 
@@ -159,20 +163,28 @@ class SoldierController extends Controller
 		if($soldier){
 
 			$response = [
-			"id" => $soldier->id,
-			"name" => $soldier->name,
-			"surname" => $soldier->surname,
-			"date_of_birth" => $soldier->date_of_birth,
-			"incorporation_date" => $soldier->incorporation_date,
-			"badge_number" => $soldier->badge_number,
-			"state" => $soldier->state,
-			"rank" => $soldier->rank,
-			"team_id" => $soldier->team->id,
-			"team_name" => $soldier->team->name,
-			"leader_id" => $soldier->team->soldierOneToOne->id,
-			"leader_surname" => $soldier->team->soldierOneToOne->surname,
-			"leader_rank" => $soldier->team->soldierOneToOne->rank
+				"id" => $soldier->id,
+				"name" => $soldier->name,
+				"surname" => $soldier->surname,
+				"date_of_birth" => $soldier->date_of_birth,
+				"incorporation_date" => $soldier->incorporation_date,
+				"badge_number" => $soldier->badge_number,
+				"state" => $soldier->state,
+				"rank" => $soldier->rank
 			];
+
+			if($soldier->team_id){
+				$response['team_id'] = $soldier->team->id;
+				$response['team_name'] = $soldier->team->name;
+
+				//$response['leader_id'] = $soldier->team->leader;
+				if($soldier->team->leader){
+					$response['leader_id'] = $soldier->team->leader->id;
+					$response['leader_surname'] = $soldier->team->leader->surname;
+					$response['leader_rank'] = $soldier->team->leader->rank;
+				}
+
+			}
 
 		}else{
 			$response = "Soldado no encontrado";

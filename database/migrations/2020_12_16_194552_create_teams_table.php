@@ -23,7 +23,7 @@ class CreateTeamsTable extends Migration
         });
         Schema::table('soldiers', function (Blueprint $table){
 
-            $table->foreignId('team_id')->nullable()->constrained()->onDelete('set null');;
+            $table->foreignId('team_id')->nullable()->constrained()->onDelete('set null');
 
         });
     }

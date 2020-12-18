@@ -171,6 +171,8 @@ class TeamController extends Controller
 				$response = $e->getMessage();
 			}
 
+		}else{
+			$response = "No";
 		}
 		return response($response);
 
@@ -186,17 +188,19 @@ class TeamController extends Controller
 		$data = json_decode($data);
 
 		$team = Team::find($data->team);
+		$mission = Mission::find($data->mission);
 
 		//Si hay un json válido, crear el libro
-		if($data&&Mission::find($data->mission)&&$team){
+		if($data&&$mission&&$team){
 
 			//TODO: Validar los datos antes de guardar el libro
 
 			if (!isset($team->mission_id)){
 				$team->mission_id = $data->mission;
-
+				$mission->state = 'In Progress';
 				try{
 					$team->save();
+					$mission->save();
 					$response = "OK";
 				}catch(\Exception $e){
 					$response = $e->getMessage();
