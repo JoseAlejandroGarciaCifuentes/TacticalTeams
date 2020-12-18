@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Team;
 use App\Models\Soldier;
 use App\Models\Mission;
+use App\Models\SoldierMission;
 
 class TeamController extends Controller
 {
@@ -156,13 +157,21 @@ class TeamController extends Controller
 		$data = json_decode($data);
 
 		$soldier = Soldier::find($data->soldier);
+		$team = Team::find($data->team);
 
 		//Si hay un json válido, crear el libro
-		if($data&&Team::find($data->team)&&$soldier){
+		if($data&&$team&&$soldier){
 
 			//TODO: Validar los datos antes de guardar el libro
 
 			$soldier->team_id = $data->team;
+
+			if(isset($team->mission_id)){
+				$soldierMission = new SoldierMission();
+				$soldierMission->soldier_id = $soldier->id;
+				$soldierMission->mission_id = $team->mission_id;
+				$soldierMission->save();
+			}
 
 			try{
 				$soldier->save();
@@ -178,6 +187,26 @@ class TeamController extends Controller
 
 	}
 
+	public function getSoldiersFromTeam($team_id){
+
+		$soldiers = Soldier::all();
+		
+		$response = [];
+
+		foreach ($soldiers as $soldier) {
+
+			if($soldier->team_id === $team_id){
+
+				//$response[] =  $soldier->id;
+				$response[] = [
+					"id" => $soldier->id
+				];
+			}
+				
+		}
+		return $response;
+	}
+
 	public function assignMission(Request $request){
 
 		$response = "";
@@ -188,6 +217,7 @@ class TeamController extends Controller
 		$data = json_decode($data);
 
 		$team = Team::find($data->team);
+		$soldiers = $this->getSoldiersFromTeam($team->id);
 		$mission = Mission::find($data->mission);
 
 		//Si hay un json válido, crear el libro
@@ -196,11 +226,22 @@ class TeamController extends Controller
 			//TODO: Validar los datos antes de guardar el libro
 
 			if (!isset($team->mission_id)){
+
 				$team->mission_id = $data->mission;
+				
+				foreach ($soldiers as $soldier) {
+					$soldierMission = new SoldierMission();
+					$soldierMission->mission_id = $mission->id;
+					$soldierMission->soldier_id = $soldier['id'];
+					$soldierMission->save();
+				}
+
 				$mission->state = 'In Progress';
+
 				try{
 					$team->save();
 					$mission->save();
+					
 					$response = "OK";
 				}catch(\Exception $e){
 					$response = $e->getMessage();
