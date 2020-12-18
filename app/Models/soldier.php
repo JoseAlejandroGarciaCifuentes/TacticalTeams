@@ -14,4 +14,12 @@ class Soldier extends Model
     public function team(){
         return $this->belongsTo(Team::class);
     }
+
+    public function teamOneToOne(){
+        return $this->belongsTo(Team::class);
+    }
+
+    public function mission(){
+        return $this->belongsToMany(Mission::class);
+    }
 }

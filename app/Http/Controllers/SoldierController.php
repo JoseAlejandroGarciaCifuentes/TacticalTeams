@@ -169,7 +169,9 @@ class SoldierController extends Controller
 			"rank" => $soldier->rank,
 			"team_id" => $soldier->team->id,
 			"team_name" => $soldier->team->name,
-			"team_leader_id" => $soldier->team->leader_id
+			"leader_id" => $soldier->team->soldierOneToOne->id,
+			"leader_surname" => $soldier->team->soldierOneToOne->surname,
+			"leader_rank" => $soldier->team->soldierOneToOne->rank
 			];
 
 		}else{

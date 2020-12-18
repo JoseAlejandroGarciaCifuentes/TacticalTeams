@@ -13,4 +13,12 @@ class Team extends Model
 
         return $this->hasMany(Soldier::class);
     }
+
+    public function soldierOneToOne(){
+        return $this->hasOne(Soldier::class);
+    }
+
+    public function mission(){
+        return $this->hasOne(Mission::class);
+    }
 }

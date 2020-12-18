@@ -54,4 +54,7 @@ Route::prefix('teams')->group(function (){
 
 	Route::post('/add/soldier',[TeamController::class, 'addSoldier']);
 
+	Route::post('/assign/mission',[TeamController::class, 'assignMission']);
+	
+
 });

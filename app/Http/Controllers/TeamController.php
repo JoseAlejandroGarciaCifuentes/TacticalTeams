@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Team;
 use App\Models\Soldier;
+use App\Models\Mission;
 
 class TeamController extends Controller
 {
@@ -168,6 +169,40 @@ class TeamController extends Controller
 				$response = "OK";
 			}catch(\Exception $e){
 				$response = $e->getMessage();
+			}
+
+		}
+		return response($response);
+
+	}
+
+	public function assignMission(Request $request){
+
+		$response = "";
+		//Leer el contenido de la petición
+		$data = $request->getContent();
+
+		//Decodificar el json
+		$data = json_decode($data);
+
+		$team = Team::find($data->team);
+
+		//Si hay un json válido, crear el libro
+		if($data&&Mission::find($data->mission)&&$team){
+
+			//TODO: Validar los datos antes de guardar el libro
+
+			if (!isset($team->mission_id)){
+				$team->mission_id = $data->mission;
+
+				try{
+					$team->save();
+					$response = "OK";
+				}catch(\Exception $e){
+					$response = $e->getMessage();
+				}
+			}else{
+				$response = "Este equipo ya tiene una mision asignada";
 			}
 
 		}

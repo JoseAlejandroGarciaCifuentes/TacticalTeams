@@ -134,8 +134,11 @@ class MissionController extends Controller
 			$response[] = $mission;
 		}
 		
+		//$response = arsort($response, 'priority');
 		return response()->json($response);
 	}
+
+
 
 	
 }
