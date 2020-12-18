@@ -122,7 +122,6 @@ class SoldierController extends Controller
 					$response = $e->getMessage();
 				}
 			}
-
 			
 		}else{
 			$response = "No soldier";
@@ -144,7 +143,8 @@ class SoldierController extends Controller
 				"surname" => $soldier->surname,
 				"rank" => $soldier->rank,
 				"badge_number" => $soldier->badge_number,
-				"team" => $soldier->team->id
+				"team_id" => $soldier->team->id,
+				"team_name" => $soldier->team->name
 			];
 		}
 		
@@ -158,7 +158,19 @@ class SoldierController extends Controller
 
 		if($soldier){
 
-			$response = $soldier;
+			$response = [
+			"id" => $soldier->id,
+			"name" => $soldier->name,
+			"surname" => $soldier->surname,
+			"date_of_birth" => $soldier->date_of_birth,
+			"incorporation_date" => $soldier->incorporation_date,
+			"badge_number" => $soldier->badge_number,
+			"state" => $soldier->state,
+			"rank" => $soldier->rank,
+			"team_id" => $soldier->team->id,
+			"team_name" => $soldier->team->name,
+			"team_leader_id" => $soldier->team->leader_id
+			];
 
 		}else{
 			$response = "Soldado no encontrado";
