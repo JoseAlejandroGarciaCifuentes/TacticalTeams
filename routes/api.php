@@ -29,6 +29,8 @@ Route::prefix('soldiers')->group(function (){
 
 	Route::get('/show/details/{id}',[SoldierController::class, 'soldierDetails']);
 
+	Route::get('/show/history/list/{id}',[SoldierController::class, 'missionHistoryList']);
+
 });
 
 Route::prefix('missions')->group(function (){
@@ -57,5 +59,12 @@ Route::prefix('teams')->group(function (){
 	Route::post('/add/soldier',[TeamController::class, 'addSoldier']);
 
 	Route::post('/assign/mission',[TeamController::class, 'assignMission']);
+
+	Route::get('/show/members',[TeamController::class, 'showMembers']);
+
+	Route::post('/out/soldier',[TeamController::class, 'soldierOut']);
+
+	Route::post('/make/boss',[TeamController::class, 'newBoss']);
+	
 	
 });

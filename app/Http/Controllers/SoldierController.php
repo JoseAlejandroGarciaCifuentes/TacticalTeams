@@ -191,5 +191,25 @@ class SoldierController extends Controller
 
 		return response()->json($response);
 	}
+
+	public function missionHistoryList($soldier_id){
+
+		$response = "";
+		$soldier = Soldier::find($soldier_id);
+
+		$response= [];
+
+		$response[] = [				 
+			"soldier_id" => $soldier->id
+		];
+
+		for ($i=0; $i <count($soldier->mission) ; $i++) { 
+			$response['mission_id'] = $soldier->mission[$i]->id;
+			$response['starting_date'] = $soldier->mission[$i]->starting_date;
+			$response['state'] =$soldier->mission[$i]->state;
+		}
+
+		return response()->json($response);
+	}
 	
 }

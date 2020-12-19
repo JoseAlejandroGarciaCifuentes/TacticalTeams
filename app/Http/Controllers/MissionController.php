@@ -179,5 +179,6 @@ class MissionController extends Controller
 
 		return response()->json($response);
 	}
+
 	
 }

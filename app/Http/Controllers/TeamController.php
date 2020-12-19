@@ -254,4 +254,92 @@ class TeamController extends Controller
 
 	}
 
+	public function showMembers(){
+
+		$response = "";
+		$teams = Team::all();
+		$leader;
+		$response= [];
+
+		for ($i=0; $i <count($teams) ; $i++) { 
+
+			$response[] = [				 
+				"team_id" => $teams[$i]->id,
+				"name_id" => $teams[$i]->name,
+				"leader_id" => $teams[$i]->leader_id
+			];
+
+			$leader = $teams[$i]->leader_id;
+
+			foreach ($teams[$i]->soldier as $soldier) {
+
+				if($soldier->id!=$leader){
+					$response['soldiers'] = $teams[$i]->soldier;
+				}
+
+			}
+
+			$response['leader'] = $teams[$i]->soldier[$leader];
+		}
+		
+
+		return response()->json($response);
+
+	}
+
+	public function soldierOut(Request $request){
+
+		$response = "";
+
+		$data = $request->getContent();
+
+		$data = json_decode($data);
+
+		$soldier = Soldier::find($data->soldier);
+
+		if($soldier){
+
+			$soldier->team_id = null;
+
+			try{
+				$soldier->save();
+				$response = "OK";
+			}catch(\Exception $e){
+				$response = $e->getMessage();
+			}
+		}else{
+			$response = "No team or soldier";
+		}
+
+		return response($response);
+	}
+
+	public function newBoss(Request $request){
+
+		$response = "";
+
+		$data = $request->getContent();
+
+		$data = json_decode($data);
+
+		$soldier = Soldier::find($data->soldier);
+		$team = Team::find($data->team);
+
+		if($soldier && $team){
+
+			$team->leader_id = $soldier->id;
+
+			try{
+				$team->save();
+				$response = "OK";
+			}catch(\Exception $e){
+				$response = $e->getMessage();
+			}
+		}else{
+			$response = "No team or soldier";
+		}
+
+		return response($response);
+	}
+
 }
