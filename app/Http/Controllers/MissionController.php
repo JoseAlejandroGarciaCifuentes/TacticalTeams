@@ -126,7 +126,7 @@ class MissionController extends Controller
 	public function missionsList(){
 
 		$response = "";
-		$missions = Mission::all();
+		$missions = Mission::orderBy('priority', 'DESC')->get();
 
 		$response= [];
 
@@ -138,7 +138,46 @@ class MissionController extends Controller
 		return response()->json($response);
 	}
 
+	public function missionsDetails($id){
 
+		$response = "";
+		$mission = Mission::find($id);
 
+		if($mission){
+
+			$soldier = $mission->soldier;
+			
+			$response = [
+				"id" => $mission->id,
+				"description" => $mission->description,
+				"priority" => $mission->priority,
+				"starting_date" => $mission->starting_date
+			];
+			
+			if($mission->teamOne){
+				$response["team_id"] = $mission->teamOne->id;
+				$response['team_name'] = $mission->teamOne->name;
+
+				if($mission->teamOne->leader){
+					$response['leader_id'] = $mission->teamOne->leader->id;
+					$response['leader_surname'] = $mission->teamOne->leader->surname;
+					$response['leader_rank'] = $mission->teamOne->leader->rank;
+					$response['badge_number'] = $mission->teamOne->leader->badge_number;
+				}
+			}
+
+			for ($i=0; $i <count($mission->soldier) ; $i++) { 
+				$response[$i]["soldier_id"] = $soldier[$i]->id;
+				$response[$i]["badge_number"] = $soldier[$i]->badge_number;
+				$response[$i]["rank"] = $soldier[$i]->rank;
+				$response[$i]["surname"] = $soldier[$i]->surname;
+			}			
+
+		}else{
+			$response = "Mision no encontrada";
+		}
+
+		return response()->json($response);
+	}
 	
 }

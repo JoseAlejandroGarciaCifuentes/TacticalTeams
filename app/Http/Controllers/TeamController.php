@@ -188,7 +188,7 @@ class TeamController extends Controller
 	}
 
 	public function getSoldiersFromTeam($team_id){
-
+		//Sujeto de pruebas
 		$soldiers = Soldier::all();
 		
 		$response = [];
@@ -197,7 +197,6 @@ class TeamController extends Controller
 
 			if($soldier->team_id === $team_id){
 
-				//$response[] =  $soldier->id;
 				$response[] = [
 					"id" => $soldier->id
 				];

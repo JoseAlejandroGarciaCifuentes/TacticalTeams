@@ -10,11 +10,12 @@ class Mission extends Model
     use HasFactory;
     protected $hidden = ['updated_at','created_at'];
 
-    public function soldierMany(){
-        return $this->belongsToMany(Soldier::class);
+    public function soldier(){
+        return $this->belongsToMany(Soldier::class, 'soldier_missions');
     }
 
-    public function team(){
-        return $this->belongsTo(Team::class);
+    public function teamOne(){
+        
+        return $this->hasOne(Team::class);
     }
 }

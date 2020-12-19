@@ -40,6 +40,8 @@ Route::prefix('missions')->group(function (){
 	Route::post('/add/soldier',[MissionController::class, 'addSoldier']);
 
 	Route::get('/show/list',[MissionController::class, 'missionsList']);
+
+	Route::get('/show/details/{id}',[MissionController::class, 'missionsDetails']);
 });
 
 Route::prefix('teams')->group(function (){

@@ -18,7 +18,7 @@ class Team extends Model
         return $this->belongsTo(Soldier::class);
     }
 
-    public function mission(){
-        return $this->hasOne(Mission::class);
+    public function missionOne(){
+        return $this->belongsTo(Mission::class);
     }
 }

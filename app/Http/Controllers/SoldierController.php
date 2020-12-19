@@ -177,7 +177,6 @@ class SoldierController extends Controller
 				$response['team_id'] = $soldier->team->id;
 				$response['team_name'] = $soldier->team->name;
 
-				//$response['leader_id'] = $soldier->team->leader;
 				if($soldier->team->leader){
 					$response['leader_id'] = $soldier->team->leader->id;
 					$response['leader_surname'] = $soldier->team->leader->surname;

@@ -20,6 +20,6 @@ class Soldier extends Model
     }
 
     public function mission(){
-        return $this->belongsToMany(Mission::class);
+        return $this->belongsToMany(Mission::class, 'soldier_missions');
     }
 }
