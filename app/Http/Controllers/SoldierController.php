@@ -9,24 +9,18 @@ use App\Models\Soldier;
 class SoldierController extends Controller
 {
     //
-
+	/**
+	 * Crea soldado
+	 */
     public function createSoldier(Request $request)
 	{
 		
 		$response = "";
-
-		//Leer el contenido de la petición
 		$data = $request->getContent();
-
-		//Decodificar el json
 		$data = json_decode($data);
-
-		//Si hay un json válido, crear el soldado
 		if($data){
 
 			$soldier = new Soldier();
-
-			//TODO: Validar los datos antes de guardar el soldado
 
 			$soldier->name = $data->name;
             $soldier->surname = $data->surname;
@@ -50,26 +44,22 @@ class SoldierController extends Controller
 		return response($response);
 	}
 
+	/**
+	 * Actualiza soldado al completo
+	 */
 	public function updateSoldier(Request $request, $id){
 
 		$response = "";
-
-		//Buscar el soldado por su id
 
 		$soldier = Soldier::find($id);
 
 		if($soldier){
 
-			//Leer el contenido de la petición
 			$data = $request->getContent();
-
-			//Decodificar el json
 			$data = json_decode($data);
 
-			//Si hay un json válido, buscar el soldado
 			if($data){
-			
-				//TODO: Validar los datos antes de guardar el soldado
+
 				$soldier->name = (isset($data->name) ? $data->name: $soldier->name);
                 $soldier->surname = (isset($data->surname) ? $data->surname: $soldier->surname);
                 $soldier->date_of_birth = (isset($data->date_of_birth) ? $data->date_of_birth: $soldier->date_of_birth);
@@ -93,26 +83,24 @@ class SoldierController extends Controller
 		return response($response);
 	}
 
+	/**
+	 * Actualiza estado del soldado
+	 * Recibe state por body y id de soldado por param
+	 */
 	public function updateSoldierState(Request $request, $id){
 
 		$response = "";
-
-		//Buscar el soldado por su id
 
 		$soldier = Soldier::find($id);
 
 		if($soldier){
 
-			//Leer el contenido de la petición
 			$data = $request->getContent();
 
-			//Decodificar el json
 			$data = json_decode($data);
 
-			//Si hay un json válido, buscar el soldado
 			if($data){
-			
-				//TODO: Validar los datos antes de guardar el soldado
+
 				$soldier->state = (isset($data->state) ? $data->state: $soldier->state);
 				
 				try{
@@ -130,9 +118,11 @@ class SoldierController extends Controller
 		return response($response);
 	}
 
+	/**
+	 * Muestra lista de soldados además del equipo al que pertenece
+	 */
 	public function soldiersList(){
 
-		$response = "";
 		$soldiers = Soldier::all();
 
 		$response = [];
@@ -155,6 +145,10 @@ class SoldierController extends Controller
 		return response()->json($response);
 	}
 
+	/**
+	 * Detalles de un soldado en concreto junto con su team y leader de ese team
+	 * Recibe id por param
+	 */
 	public function soldierDetails($id){
 
 		$response = "";
@@ -192,6 +186,10 @@ class SoldierController extends Controller
 		return response()->json($response);
 	}
 
+	/**
+	 * Historial de misiones de un soldado 
+	 * Recibe soldado por param
+	 */
 	public function missionHistoryList($soldier_id){
 
 		$response = "";

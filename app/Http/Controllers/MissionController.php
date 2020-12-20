@@ -12,23 +12,21 @@ class MissionController extends Controller
 {
     //
 
+	/**
+	 * Crea Mision
+	 */
     public function createMission(Request $request)
 	{
 		
 		$response = "";
 
-		//Leer el contenido de la petición
 		$data = $request->getContent();
 
-		//Decodificar el json
 		$data = json_decode($data);
 
-		//Si hay un json válido, crear la mision
 		if($data){
 
 			$mission = new Mission();
-
-			//TODO: Validar los datos antes de guardar la mision
 
 			$mission->description = $data->description;
             $mission->priority = $data->priority;
@@ -52,30 +50,26 @@ class MissionController extends Controller
 		return response($response);
 	}
 
+	/**
+	 * Actualiza mission
+	 */
 	public function updateMission(Request $request, $id){
 
 		$response = "";
-
-		//Buscar la mision por su id
 
 		$mission = Mission::find($id);
 
 		if($mission){
 
-			//Leer el contenido de la petición
 			$data = $request->getContent();
 
-			//Decodificar el json
 			$data = json_decode($data);
 
-			//Si hay un json válido, buscar la mision
 			if($data){
 			
-				//TODO: Validar los datos antes de guardar la mission
 				$mission->description = (isset($data->description) ? $data->description : $mission->description);
 				$mission->priority = (isset($data->priority) ? $data->priority : $mission->priority);
                 $mission->state = (isset($data->state) ? $data->state : $mission->state);
-
 
 				try{
 					$mission->save();
@@ -93,22 +87,20 @@ class MissionController extends Controller
 		return response($response);
 	}
 
+	/**
+	 * Añade soldados a una mission, es decir, tabla soldier-missions
+	 * Soldado y mission se reciben por body
+	 */
 	public function addSoldier(Request $request){
 
 		$response = "";
-		//Leer el contenido de la petición
 		$data = $request->getContent();
 
-		//Decodificar el json
 		$data = json_decode($data);
 
-		//Si hay un json válido, crear el libro
 		if($data&&Mission::find($data->mission)&&Soldier::find($data->soldier)){
 
 			$soldierMission = new SoldierMission();
-
-			//TODO: Validar los datos antes de guardar el libro
-
 			$soldierMission->mission_id = $data->mission;
 			$soldierMission->soldier_id = $data->soldier;
 			try{
@@ -122,7 +114,9 @@ class MissionController extends Controller
 		return response($response);
 
 	}
-
+	/**
+	 * Muestra lista de missiones ordenadas por prioridad, de más a menos
+	 */
 	public function missionsList(){
 
 		$response = "";
@@ -138,6 +132,10 @@ class MissionController extends Controller
 		return response()->json($response);
 	}
 
+	/**
+	 * Detalles de una mission en concreto junto con el equipo y el lider del equipo
+	 * Recibe id de mission por param
+	 */
 	public function missionsDetails($id){
 
 		$response = "";

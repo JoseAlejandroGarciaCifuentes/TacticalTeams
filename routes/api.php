@@ -54,15 +54,15 @@ Route::prefix('teams')->group(function (){
 
 	Route::post('/delete/{id}',[TeamController::class, 'deleteTeam']);
 
-	Route::post('/add/leader/{id}',[TeamController::class, 'addLeader']);
+	Route::post('/assign/leader',[TeamController::class, 'assignLeader']);
 
-	Route::post('/add/soldier',[TeamController::class, 'addSoldier']);
+	Route::post('/assign/soldier',[TeamController::class, 'assignSoldier']);
 
 	Route::post('/assign/mission',[TeamController::class, 'assignMission']);
 
-	Route::get('/show/members',[TeamController::class, 'showMembers']);
+	Route::get('/show/members/{id}',[TeamController::class, 'showMembers']);
 
-	Route::post('/out/soldier',[TeamController::class, 'soldierOut']);
+	Route::post('/out/soldier/{id}',[TeamController::class, 'soldierOut']);
 
 	Route::post('/make/boss',[TeamController::class, 'newBoss']);
 	
